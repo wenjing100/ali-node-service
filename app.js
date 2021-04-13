@@ -13,6 +13,7 @@ const aboutRouter = require('./routes/about');
 const loginRouter = require('./routes/login');
 const detailsRouter = require('./routes/details');
 const cartRouter = require('./routes/cart');
+const catagoryRouter = require('./routes/catagory');
 
 var app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/about', aboutRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/details',detailsRouter);
 app.use('/api/cart',cartRouter);
+app.use('/api/catagory',catagoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
