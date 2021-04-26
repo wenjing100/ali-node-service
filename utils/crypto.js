@@ -1,3 +1,4 @@
+/* 对用户密码加密功能 */
 const crypto = require('crypto');
 
 //创建 密钥，这个是自己定义的

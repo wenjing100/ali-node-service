@@ -21,6 +21,12 @@ router.get('/', cors(), function (req, res, next) {
         data: result,
         msg: '查询数据成功'
       })
+    }else{
+      res.json({
+        status: -1,
+        data: [],
+        msg: '没有对应数据'
+      })
     }
   })
 });

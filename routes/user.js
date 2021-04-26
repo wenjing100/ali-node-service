@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
-const { temp_set } = require('../utils/operateMsql.js')
+const auth = require('../utils/auth.js')
 
-router.get('/session-test',(req,res,next)=>{
-    let sql = ``;
-    
-  
-  temp_set(sql);
-  console.log("aaa")
+router.get('/userinfo',auth,(req,res,next)=>{
+   res.json({
+     code:1,
+     uninfo:{
+       un:'张三',
+       age:18
+     }
+   })
 })
 
 module.exports = router;

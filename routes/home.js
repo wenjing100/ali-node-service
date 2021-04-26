@@ -48,11 +48,20 @@ router.get('/multidata/list', cors(), function (req, res, next) {
       delete query[key]
     }
   }
-  function setSql({ pageSize = 8, pageIndex = 1, sortType = '', hotPoint = '流行'}) {
+  function setSql({ pageSize = 8, pageIndex = 1, sortType = '', hotPoint ,cat }) {
+    if(!hotPoint){
+      let arr = ['流行','精选','新款'];
+      let rd_num = parseInt(Math.random()*2);
+      console.log(rd_num);
+      hotPoint = arr[rd_num];
+    }
     let size = parseInt(pageSize);
     let count = size * (parseInt(pageIndex) - 1);
-    let sql = `select iid,g_name,inventory,price,marketprice,top_imgs from wenjing_01.goods_details where tag = '${hotPoint}'`
-
+    let sql = `select iid,g_name,inventory,price,marketprice,top_imgs from wenjing_01.goods_details where 1 = 1`
+    sql += ` and tag = '${hotPoint}'`
+    if(cat){
+      sql += ` and cat = ${cat}`
+    }
     sql += ` order by price ${sortType}, update_time desc limit ${count},${size}`
     return sql
   }
