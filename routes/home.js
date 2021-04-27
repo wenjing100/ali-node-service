@@ -15,11 +15,11 @@ const { exec } = require('../db/mysql.js');
       data: {
         banner: {
           list: [
-            { link: 'http://47.110.38.241', title: '换新女装节', image: '0.jpg' },
-            { link: 'http://47.110.38.241', title: '女神造物', image: '1.jpg' },
-            { link: 'http://47.110.38.241', title: '种草', image: '2.jpg' },
-            { link: 'http://47.110.38.241', title: '爱豆推荐', image: '3.jpg' },
-            { link: 'http://47.110.38.241', title: '大促女装', image: '4.jpg' },
+            { link: 'http://47.110.38.241', title: '换新女装节', image: 'http://47.110.38.241/swiper/05.webp' },
+            { link: 'http://47.110.38.241', title: '女神造物', image: 'http://47.110.38.241/swiper/04.webp' },
+            { link: 'http://47.110.38.241', title: '种草', image: 'http://47.110.38.241/swiper/03.webp' },
+            { link: 'http://47.110.38.241', title: '爱豆推荐', image: 'http://47.110.38.241/swiper/02.webp' },
+            { link: 'http://47.110.38.241', title: '大促女装', image: 'http://47.110.38.241/swiper/01.webp' },
           ],
           otherkey: true
         },
@@ -27,14 +27,14 @@ const { exec } = require('../db/mysql.js');
         keywords: {},
         recommend: {
           list: [
-            { link: 'http://47.110.38.241', title: '十点抢券', image: 'recom01.webp' },
-            { link: 'http://47.110.38.241', title: '好物特卖', image: 'recom02.webp' },
-            { link: 'http://47.110.38.241', title: '内购福利', image: 'recom03.webp' },
-            { link: 'http://47.110.38.241', title: '季节上新', image: 'recom04.webp' },
+            { link: 'http://47.110.38.241', title: '十点抢券', image: 'http://47.110.38.241/recom/recom01.jpg' },
+            { link: 'http://47.110.38.241', title: '好物特卖', image: 'http://47.110.38.241/recom/recom02.jpg' },
+            { link: 'http://47.110.38.241', title: '内购福利', image: 'http://47.110.38.241/recom/recom03.webp' },
+            { link: 'http://47.110.38.241', title: '季节上新', image: 'http://47.110.38.241/recom/recom04.webp' },
           ],
           otherkey: true
-        }
-
+        },
+        thisWeek:{image:'reco--bg.png'}
       },
       success: true
     })

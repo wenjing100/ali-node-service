@@ -4,16 +4,29 @@ const cors = require('cors');
 const { exec } = require('../db/mysql.js');
 
 router.get('/', cors(), function (req, res, next) {
-  function setSql({ id = 1, size = 20}) {
-    let sql = ``;
-    if(id == 1){
-      sql = `SELECT * FROM wenjing_01.catagory_show`
+  let { id = 2, size = 20} = req.query;
+  let sql = `select iid,g_name,inventory,price,marketprice,top_imgs from wenjing_01.goods_details where cat = ${id} limit ${size}`;
+
+  exec(sql, [], function (result, fields) {
+    console.log('返回catagory--show');
+    if (result.length) {
+      res.json({
+        status: 0,
+        data: result,
+        msg: '查询数据成功'
+      })
     }else{
-      sql = `select iid,g_name,inventory,price,marketprice,top_imgs from wenjing_01.goods_details where cat = ${id} limit ${size}`
+      res.json({
+        status: -1,
+        data: [],
+        msg: '没有对应数据'
+      })
     }
-    return sql
-  }
-  exec(setSql(req.query), [], function (result, fields) {
+  })
+});
+router.get('/one', cors(), function (req, res, next) {
+  let sql = `SELECT * FROM wenjing_01.catagory_show`;
+  exec(sql, [], function (result, fields) {
     console.log('返回catagory--show');
     if (result.length) {
       res.json({
