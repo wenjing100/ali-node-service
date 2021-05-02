@@ -4,7 +4,8 @@ const cors = require('cors');
 const { exec } = require('../db/mysql.js');
 
 router.get('/', cors(), function (req, res, next) {
-  let { id = 2, size = 20} = req.query;
+  let { id , size } = req.query;
+  console.log(id);
   let sql = `select iid,g_name,inventory,price,marketprice,top_imgs from wenjing_01.goods_details where cat = ${id} limit ${size}`;
 
   exec(sql, [], function (result, fields) {
@@ -45,7 +46,7 @@ router.get('/one', cors(), function (req, res, next) {
 });
 
 router.get('/side', cors(), function (req, res, next) {
-  let sql = `select * from category where pid between 2 and 4;`
+  let sql = `select a.id,a.name,a.pid from category a, (SELECT distinct cat FROM wenjing_01.goods_details) b where a.id = b.cat;`
   exec(sql, [], function (result, fields) {
     console.log('返回catagory');
     if (result.length) {
