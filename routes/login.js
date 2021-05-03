@@ -17,7 +17,6 @@ router.post('/',cors(), function(req, res, next) {
     console.log('登陆');
     if (result.length) {
       //jwt 标准 生成令牌
-      console.log(result);
       let tk = jwt.sign({
         data:{//用户信息
           uname:un//result.data[0].buyer_name

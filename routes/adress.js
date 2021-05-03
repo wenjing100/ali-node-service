@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
-//json web token
-const jwt = require('jsonwebtoken');
-const { exec } = require('../db/mysql.js');
+
+const { exec,escape } = require('../db/mysql.js');
 /**
  * @api {get} /api/about/address/list 获取收货地址表
  * 
@@ -22,7 +21,7 @@ const { exec } = require('../db/mysql.js');
  * }
  * @apiSampleRequest /api/about
  */
-router.get('/address/list', function(req, res, next) {
+router.get('/list', function(req, res, next) {
   let sqlstr = `select * from address where id = 1;` //?表示传进来的参数
   exec(sqlstr,[req.query.id],function(result,fields) {
     console.log('测试返回结果');

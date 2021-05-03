@@ -24,5 +24,5 @@ function exec(sql, arr = [], callback){
 
 module.exports = {
     exec,
-    excape:mysql.escape
+    escape:mysql.escape
 }

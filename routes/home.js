@@ -44,6 +44,7 @@ router.get('/multidata/list', cors(), function (req, res, next) {
   let query = req.query;
   // 取出空键值对
   for (let key in query) {
+    query[key] = escape(query[key]);
     if (!query[key]) {
       delete query[key]
     }
@@ -52,7 +53,7 @@ router.get('/multidata/list', cors(), function (req, res, next) {
     if(!hotPoint){
       let arr = ['流行','精选','新款'];
       let rd_num = parseInt(Math.random()*2);
-      console.log(rd_num);
+      console.log("随机数是多少？---"+rd_num);
       hotPoint = arr[rd_num];
     }
     let size = parseInt(pageSize);
@@ -82,6 +83,7 @@ router.get('/multidata/recom', cors(), function (req, res, next) {
   let query = req.query;
   // 取出空键值对
   for (let key in query) {
+    query[key] = escape(query[key]);
     if (!query[key]) {
       delete query[key]
     }

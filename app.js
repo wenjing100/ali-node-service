@@ -9,7 +9,7 @@ const session = require('express-session')
 // var usersRouter = require('./routes/users');
 const homeRouter = require('./routes/home');
 const userRouter = require('./routes/user');
-const aboutRouter = require('./routes/about');
+const addressRouter = require('./routes/adress');
 const loginRouter = require('./routes/login');
 const detailsRouter = require('./routes/details');
 const cartRouter = require('./routes/cart');
@@ -41,7 +41,7 @@ app.use(session({
 // app.use('/users', usersRouter);
 app.use('/api/home', homeRouter);
 app.use('/api/user', userRouter);
-app.use('/api/about', aboutRouter);
+app.use('/api/address', addressRouter);
 app.use('/api/login', loginRouter);
 app.use('/api/details',detailsRouter);
 app.use('/api/cart',cartRouter);
