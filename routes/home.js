@@ -44,7 +44,6 @@ router.get('/multidata/list', cors(), function (req, res, next) {
   let query = req.query;
   // 取出空键值对
   for (let key in query) {
-    query[key] = escape(query[key]);
     if (!query[key]) {
       delete query[key]
     }
@@ -66,8 +65,7 @@ router.get('/multidata/list', cors(), function (req, res, next) {
     sql += ` order by price ${sortType}, update_time desc limit ${count},${size}`
     return sql
   }
-
-  exec(setSql(req.query), [], function (result, fields) {
+  exec(setSql(query), [], function (result, fields) {
     console.log('返回homelist');
     if (result.length) {
       res.json({

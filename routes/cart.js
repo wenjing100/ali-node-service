@@ -4,11 +4,12 @@ const cors = require('cors');
 const { exec,escape } = require('../db/mysql.js');
 
 //查询购物出列表
-router.post('/', cors(), function (req, res, next) {
+router.get('/', cors(), function (req, res, next) {
   let { bid } = req.query;
   bid = escape(bid);
-  let sqlstr = `select a.u_id,a.g_id,a.goods_num,a.g_status,b.g_name,b.price,b.top_imgs from cart a, goods_details b where a.u_id = ? and b.iid = a.g_id;`;
-  exec(sqlstr, [bid], function (result, fields) {
+  let sqlstr = `select a.u_id,a.g_id,a.goods_num,a.g_status,b.g_name,b.price,b.top_imgs from cart a, goods_details b where a.u_id = ${bid} and b.iid = a.g_id;`;
+  console.log(sqlstr);
+  exec(sqlstr, [], function (result, fields) {
     res.json({
       status: 0,
       data: result,
@@ -24,14 +25,14 @@ router.post('/insert', cors(), function (req, res, next) {
   gid = escape(gid);
   num = escape(num);
   // 查询是否存在商品
-  let sqlstr = `select * from cart where g_id ='${gid}'`;
+  let sqlstr = `select * from cart where g_id =${gid}`;
   exec(sqlstr, [], function (result, fields) {
     //没有商品添加数据
     sqlstr = `insert into cart (u_id,g_id,goods_num,g_status,create_time)
-        values('${bid}','${gid}',${num},1,current_timestamp())
+        values(${bid},${gid},${num},1,current_timestamp())
     `;
     if (result.length > 0) {//已有商品，增加数量
-      sqlstr = `update cart set goods_num = goods_num + ${num} where g_id = '${gid}' and u_id = '${bid}'`
+      sqlstr = `update cart set goods_num = goods_num + ${num} where g_id = ${gid} and u_id = ${bid}`
     }
     exec(sqlstr, [], function (result, fields) {
       res.json({
@@ -47,7 +48,7 @@ router.post('/del', cors(), function (req, res, next) {
   let { bid, gid } = req.query;
   bid = escape(bid);
   gid = escape(gid);
-  let sqlstr = `delete from cart where g_id ='${gid}' and u_id = '${bid}'`;
+  let sqlstr = `delete from cart where g_id =${gid} and u_id = ${bid}`;
   exec(sqlstr, [], function (result, fields) {
     res.json({
       status: 0,
@@ -76,9 +77,10 @@ router.post('/add', cors(), function (req, res, next) {
   bid = escape(bid);
   gid = escape(gid);
   num = escape(num);
-  let sqlstr = `select goods_num from cart where u_id = ? and g_id = ? ;select inventory from goods_details where iid = ?`;
-  exec(sqlstr, [bid, gid, gid], function (result, fields) {
-    let isEmpty = result[1][0].inventory - result[0][0].goods_num >= 0 ? false : true;
+  let sqlstr = `select a.goods_num as num,b.inventory as inv from cart a,goods_details b where a.u_id = ${bid} and a.g_id =${gid} and b.iid = ${gid};`;
+  exec(sqlstr, [], function (result, fields) {
+    console.log(result)
+    let isEmpty = result.inv - result.num >= 0 ? false : true;
     if (isEmpty) {
       res.json({
         status: -1,
@@ -101,7 +103,7 @@ router.post('/status', cors(), function (req, res, next) {
   bid = escape(bid);
   gid = escape(gid);
   status = escape(status);
-  let sqlstr = `update cart set g_status =  ? where g_id = '${gid}' and u_id = '${bid}'`;
+  let sqlstr = `update cart set g_status =  ? where g_id = ${gid} and u_id = ${bid}`;
   exec(sqlstr, [status], function (result, fields) {
     res.json({
       status: 0,
