@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
-const cors = require('cors');//引入cors 解决跨域
+// const cors = require('cors');//引入cors 解决跨域
 const { exec,escape } = require('../db/mysql.js');
 const randomStr = require('../utils/name-gen.js');//生成随机的用户id
 const Auth = require('../utils/auth.js');//token验证
 const { createToken } = require('../utils/jwtMethods.js');
+
 
 /* 获取用户列表 */
 router.get('/',Auth,(req,res,next)=>{
@@ -19,7 +20,7 @@ router.get('/',Auth,(req,res,next)=>{
 })
 
 /* Login  */
-router.post('/login',cors(), function(req, res, next) {
+router.post('/login', function(req, res, next) {
   let { un, psw } = req.query;
   un = escape(un);
   psw = escape(psw);
@@ -29,10 +30,8 @@ router.post('/login',cors(), function(req, res, next) {
     if (result.length) {//登陆成功
       //jwt 标准 生成令牌
       let tk = createToken({//用户信息
-          uname:un,//result[0].buyer_name
-          u_id:result[0].b_id
+          uname:result[0].buyer_name
         })
-      
       res.json({
         code:1,
         data:result,
@@ -49,7 +48,7 @@ router.post('/login',cors(), function(req, res, next) {
 });
 
 /* 注册 */
-router.post('/register',cors(), function(req, res, next) {
+router.post('/register', function(req, res, next) {
   let { un, psw } = req.query;
   un = escape(un);
   psw = escape(psw);
@@ -84,19 +83,34 @@ router.post('/register',cors(), function(req, res, next) {
 });
 
 /* 验证 */
-router.post('/verify',cors(),Auth, function(req, res, next) {
-  let { un, uid} = req.query;
+router.post('/verify',Auth, function(req, res, next) {
+  let { un } = req.query;
   //登陆 有效，并且刷新token
-  console.log(token)
   let tk = createToken({
     uname:un,
-    u_id:uid
   })
   res.json({
     code:1,
     msg:'登陆有效',
-    token:tk
+    token:tk,
   })
+});
+
+/* 获取用户详情 */
+router.post('/uinfo',Auth, function(req, res, next) {
+  let { un } = req.query;
+  un = escape(un);
+  let sql = `select * from buyers where buyer_name = ${un};`;
+  exec(sql,[],function(result,fields){
+    console.log(result)
+    if(result.length){
+      res.json({
+        code:1,
+        data:result
+      })
+    }
+  });
+
 });
 
 

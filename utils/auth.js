@@ -10,22 +10,21 @@ function testAuth(req,res,next){
   }
   if(!token){//token丢失
     isOutOfData = true;
+    console.log('验证00000')
   }else{
-    let tokenStatus = verifyToken(token);
+    let tokenStatus = verifyToken(token);//----------------------------------
+    console.log('验证11111')
     //判断token没有过期
     if(tokenStatus){ 
       isOutOfData = false;
     }else{
       //token过期
       isOutOfData = true;
+      console.log('验证2222')
     }
   }
-
   if(isOutOfData){
-    res.json({
-      code:0,
-      msg:'token失效'
-    })
+    res.sendStatus(401)//token失效，发送401
   }else{
     next();
   }

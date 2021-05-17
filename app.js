@@ -14,7 +14,7 @@ const addressRouter = require('./routes/adress');
 const detailsRouter = require('./routes/details');
 const cartRouter = require('./routes/cart');
 const catagoryRouter = require('./routes/catagory');
-
+const CONFIG = require('./config/CORS.js');
 var app = express();
 
 // view engine setup
@@ -26,16 +26,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use(cors());
+// 跨域方案
+app.all('*',(req,res,next)=>{
+  const {
+    ALLOW_ORIGIN,
+    CREDENTIALS,
+    HEADERS,
+    ALLOW_METHODS
+  } = CONFIG.CORS;
+  res.header("Access-Control-Allow-Origin",ALLOW_ORIGIN);
+  res.header("Access-Control-Allow-Credentials",CREDENTIALS);
+  res.header("Access-Control-Allow-Headers",HEADERS);
+  res.header("Access-Control-Allow-Methods",ALLOW_METHODS);
+  
+  req.method === 'OPTIONS'? res.send('CURRENT SERVICES SUPPORT CROSS DOMAIN FROM *'):next();
+})
 
-app.use(session({
-  secret:'Cwj12345##__',
-  cookie:{
-    path:'/',//根目录的话，前端的每个页面都可以访问到了;根目录是默认配置，其实也可以不写
-    httpOnly:true,//让前端js无法访问网站cookie（安全）;默认配置
-    maxAge:24*60*60*1000,//设置cookie时效--24h
-  }
-}))
+
+//session 设置
+app.use(session(CONFIG.SESSION));
 
 // app.use('/', indexRouter);
 app.use('/api/home', homeRouter);
