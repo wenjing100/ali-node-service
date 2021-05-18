@@ -63,8 +63,9 @@ router.post('/sub', cors(), function (req, res, next) {
   bid = escape(bid);
   gid = escape(gid);
   num = escape(num);
-  let sqlstr = `update cart set goods_num = goods_num - ? where g_id = ? and u_id = ?`;
-  exec(sqlstr, [num, gid, bid], function (result, fields) {
+  let sqlstr = `update cart set goods_num = goods_num - ${num} where g_id = ${gid} and u_id = ${bid}`;
+  exec(sqlstr, [], function (result, fields) {
+    console.log('减少~~~~~')
     res.json({
       status: 0,
       msg: '减少'
@@ -79,16 +80,15 @@ router.post('/add', cors(), function (req, res, next) {
   num = escape(num);
   let sqlstr = `select a.goods_num as num,b.inventory as inv from cart a,goods_details b where a.u_id = ${bid} and a.g_id =${gid} and b.iid = ${gid};`;
   exec(sqlstr, [], function (result, fields) {
-    console.log(result)
-    let isEmpty = result.inv - result.num >= 0 ? false : true;
+    let isEmpty = result[0].inv - result[0].num >= 0 ? false : true;
     if (isEmpty) {
       res.json({
         status: -1,
         msg: '库存不足'
       })
     } else {
-      sqlstr = `update cart set goods_num = goods_num + ? where g_id = ? and u_id = ?`;
-      exec(sqlstr, [num, gid, bid], function (result, fields) {
+      sqlstr = `update cart set goods_num = goods_num + ${num} where g_id = ${gid} and u_id = ${bid}`;
+      exec(sqlstr, [], function (result, fields) {
         res.json({
           status: 0,
           msg: '增加'
@@ -103,8 +103,8 @@ router.post('/status', cors(), function (req, res, next) {
   bid = escape(bid);
   gid = escape(gid);
   status = escape(status);
-  let sqlstr = `update cart set g_status =  ? where g_id = ${gid} and u_id = ${bid}`;
-  exec(sqlstr, [status], function (result, fields) {
+  let sqlstr = `update cart set g_status = ${status} where g_id = ${gid} and u_id = ${bid}`;
+  exec(sqlstr, [], function (result, fields) {
     res.json({
       status: 0,
       msg: '状态修改成功'
